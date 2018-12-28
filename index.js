@@ -127,22 +127,22 @@ const filteredData = filterDataByMatchingKeys(data.leads);
 const finalLeadsArr = [...filteredData.newLeadsData, ...finalDuplicatesToKeep];
 data.leads = finalLeadsArr;
 
-//write to file
-fs.writeFile(filename, JSON.stringify(data, null, 2), function (err) {
-  if (err) {
-    return console.log(err);
-  }
-  console.log("The file was saved!");
+// // write to file
+// fs.writeFile(filename, JSON.stringify(data, null, 2), function (err) {
+//   if (err) {
+//     return console.log(err);
+//   }
+//   console.log("The file was saved!");
 
-  console.log('SOURCE: ')
-  console.log(data.leads);
+//   console.log('SOURCE: ')
+//   console.log(data.leads);
 
-  console.log('TO BE REMOVED:');
-  console.log(filteredData.leadsToRemove);  
+//   console.log('TO BE REMOVED:');
+//   console.log(filteredData.leadsToRemove);  
 
-  console.log('OUTPUT LEADS: ')
-  console.log(finalLeadsArr);
-});
+//   console.log('OUTPUT LEADS: ')
+//   console.log(finalLeadsArr);
+// });
 
 module.exports = {
   getDuplicates,

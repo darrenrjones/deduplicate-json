@@ -1,23 +1,22 @@
 const fs = require('fs');
-const moment = require('moment');
 
 process.argv = ['node', 'jest', 'leadsTester.json'];
 
-const functions = require('../');
-const getDuplicates = functions.getDuplicates;
-const getMostRecentOrLast = functions.getMostRecentOrLast;
-const removeIdenticalLeads = functions.removeIdenticalLeads;
+const getDuplicates = require('../').getDuplicates;
+const getMostRecentOrLast = require('../').getMostRecentOrLast;
+const removeIdenticalLeads = require('../').removeIdenticalLeads;
 
-const filename = process.argv[2];
+// const filename = process.argv[2];
 
 try {
-  data = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  data = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 } catch (e) {
   console.log('Error:', e.stack);
 }
 
 
 describe('getDuplicates', () => {
+  
   describe('email', () => {
     it('.dupes should return 4 leads with dupe emails from leadsTester', () => {
       const emailDupes = getDuplicates(data.leads, 'email').dupes;
@@ -42,6 +41,7 @@ describe('getDuplicates', () => {
       // console.log(idNonDupes)
     });
   });
+
 });
 
 describe('getMostRecentOrLast', () => {
@@ -56,13 +56,12 @@ describe('getMostRecentOrLast', () => {
       expect(emailDuplicatesToKeep.length).toBe(2)
     });
     it('should contain the earliest emailDupe from mathching group if there are multiple', () => {
-      expect(emailDuplicatesToKeep[0]).toEqual(data.leads[0])
+      expect(emailDuplicatesToKeep[0]).toEqual(data.leads[1])
     });
     it('should contain last in list of emailDupes if entryDate isSame', () => {
       expect(emailDuplicatesToKeep[1]).toEqual(data.leads[3])
     });
   });
-
   describe('idDupes', () => {
     const idDupes = getDuplicates(data.leads, '_id').dupes;
     const idDuplicatesToKeep = getMostRecentOrLast(idDupes, '_id');
@@ -73,15 +72,17 @@ describe('getMostRecentOrLast', () => {
       expect(idDuplicatesToKeep.length).toBe(2)
     });
     it('should contain the earliest idDupe from mathching group if there are multiple', () => {
-      expect(idDuplicatesToKeep[0]).toEqual(data.leads[1])
+      expect(idDuplicatesToKeep[0]).toEqual(data.leads[0])
     });
     it('should contain last in list of idDupes group if entryDate isSame', () => {
-      expect(idDuplicatesToKeep[1]).toEqual(data.leads[3])
+      expect(idDuplicatesToKeep[1]).toEqual(data.leads[1])
     });
   });
+
 });
 
 describe('removeIdenticalLeads', () => {
+
   const emailDupes = getDuplicates(data.leads, 'email').dupes;
   const emailDuplicatesToKeep = getMostRecentOrLast(emailDupes, 'email');
   // console.log('emaildupestokeep: ', emailDuplicatesToKeep);
@@ -94,19 +95,29 @@ describe('removeIdenticalLeads', () => {
   it('contains 3 final leads from all duplicates', () => {
     expect(finalDuplicatesToKeep.length).toBe(3);
   });
-  it('contains lead with firstName: `even@test 2nd`', () => {
+  it('contains lead with firstName: `2222 first`', () => {
     expect(finalDuplicatesToKeep).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          firstName: 'even@test 2nd'
+          firstName: '2222 first'
         })
       ])
     );
   })
-  it('does not contain lead with firstName: `even@test 2nd` more than once', () => {
-    const evenTest2ndMatches = finalDuplicatesToKeep.filter(lead => lead.firstName === 'even@test 2nd');
+  it('emailDuplicatesToKeep contains lead with firstName: `2222 first` 1 time', () => {
+    const emailsToKeep = emailDuplicatesToKeep.filter(lead => lead.firstName === '2222 first');
     // console.log(evenTest2ndMatches);
-    expect(evenTest2ndMatches.length).toBe(1)
+    expect(emailsToKeep.length).toBe(1)
+  });
+  it('idDuplicatesToKeep ALSO contains lead with firstName: `2222 first` 1 time', () => {
+    const idsToKeep = idDuplicatesToKeep.filter(lead => lead.firstName === '2222 first');
+    // console.log(evenTest2ndMatches);
+    expect(idsToKeep.length).toBe(1)
+  });
+  it('finalDuplicatesToKeep does not contain lead with firstName: `2222 first` more than once', () => {
+    const finalDupesToKeep = finalDuplicatesToKeep.filter(lead => lead.firstName === '2222 first');
+    // console.log(evenTest2ndMatches);
+    expect(finalDupesToKeep.length).toBe(1)
   });
 
 });

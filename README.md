@@ -6,7 +6,11 @@ It will replace all objects in the leads array that have a duplicate 'email' or 
 
 The original JSON file will be overwritten providing you with a one time console log of the original JSON, the items to be removed, and the final version of the file.
 
-##To use:
+## Getting Started:
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org)
 
 Clone this repo and cd into the root directory
 
@@ -176,12 +180,28 @@ OUTPUT LEADS:
 
 ```
 
+## Testing
 
+in root directory run
 
+```
+npm test
+```
 
+Unit tests on the main functions using the leadsTester.json file.
 
+## Built With
 
-This application will deduplicate a json file with the given format.
+[Node.js](https://nodejs.org)
+
+[Moment.js](https://momentjs.com/)
+
+[Jest](https://facebook.github.io/jest/)
+
+## Author
+
+[Darren Jones](https://github.com/darrenrjones)
+
 
 
 
