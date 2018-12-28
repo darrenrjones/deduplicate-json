@@ -1,34 +1,36 @@
-[
-  {
-    "_id": "555555555555555555",
-    "email": "unique@test.com",
-    "firstName": "Five",
-    "lastName": "Tester",
-    "address": "111 Street St",
-    "entryDate": "2014-05-07T17:33:20+00:00"
-  },
-  {
-    "_id": "111111111111111111",
-    "email": "odd@test.com",
-    "firstName": "One",
-    "lastName": "Tester",
-    "address": "111 Street St",
-    "entryDate": "2014-05-07T17:30:20+00:00"
-  },
-  {
-    "_id": "444444444444444444",
-    "email": "even@test.com",
-    "firstName": "even@test 2nd",
-    "lastName": "id 4444 Second",
-    "address": "111 Street St",
-    "entryDate": "2014-05-07T17:31:20+00:00"
-  },
-  {
-    "_id": "222222222222222222",
-    "email": "even@test.com",
-    "firstName": "Two",
-    "lastName": "Tester",
-    "address": "111 Street St",
-    "entryDate": "2014-05-07T17:32:20+00:00"
-  }
-]
+{
+  "leads": [
+    {
+      "_id": "555555555555555555",
+      "email": "unique@test.com",
+      "firstName": "Five",
+      "lastName": "Tester",
+      "address": "111 Street St",
+      "entryDate": "2014-05-07T17:33:20+00:00"
+    },
+    {
+      "_id": "111111111111111111",
+      "email": "odd@test.com",
+      "firstName": "One",
+      "lastName": "Tester",
+      "address": "111 Street St",
+      "entryDate": "2014-05-07T17:30:20+00:00"
+    },
+    {
+      "_id": "444444444444444444",
+      "email": "even@test.com",
+      "firstName": "even@test 2nd",
+      "lastName": "id 4444 Second",
+      "address": "111 Street St",
+      "entryDate": "2014-05-07T17:31:20+00:00"
+    },
+    {
+      "_id": "222222222222222222",
+      "email": "even@test.com",
+      "firstName": "Two",
+      "lastName": "Tester",
+      "address": "111 Street St",
+      "entryDate": "2014-05-07T17:32:20+00:00"
+    }
+  ]
+}

@@ -28,7 +28,6 @@ const getDuplicates = (leadsArr, key) => {
     if (dupeTracker.hasOwnProperty(lead[key])) {
       if (dupeTracker[lead[key]] !== 'dupe') {
         dupeTracker[lead[key]] = 'dupe';
-        // dupes.push(lead);
       }
     } else {
       dupeTracker[lead[key]] = 'unique';
@@ -41,7 +40,6 @@ const getDuplicates = (leadsArr, key) => {
     if (dupeKeys.includes(lead[key])) {
       dupes.push(lead)
     } else {
-      // console.log(lead.email);      
       nonDupes.push(lead);
     }
   });
@@ -81,47 +79,19 @@ const removeIdenticalLeads = (leadsArr1, leadsArr2) => {
     return arr.indexOf(lead) === index;
   })
 }
-
-
-//get duplicates:
-const emailDupes = getDuplicates(data.leads, 'email');
-// console.log('email dupes: ', emailDupes.dupes);
-const idDupes = getDuplicates(data.leads, '_id');
-// console.log('ID dupes: ',idDupes.dupes);
-
-
-// //get nonDupes:
-// const emailNonDupes = emailDupes.nonDupes;
-// // console.log('emailNonDUPES', emailNonDupes);
-// const idNonDupes = idDupes.nonDupes;
-// // console.log('idNonDUPES', idNonDupes);
-
-
-const emailDuplicatesToKeep = getMostRecentOrLast(emailDupes.dupes, 'email')
-// console.log('emaildupestokeep: ', emailDuplicatesToKeep);
-const idDuplicatesToKeep = getMostRecentOrLast(idDupes.dupes, '_id')
-// console.log('IDdupestokeep: ', idDuplicatesToKeep);
-
-
-const finalDuplicatesToKeep = removeIdenticalLeads(emailDuplicatesToKeep, idDuplicatesToKeep);
-// console.log('final dupes to keep: ', finalDuplicatesToKeep);
-
-//get id and email finalDuplicatesToKeep 
-const matchingEmails = finalDuplicatesToKeep.map(lead => {
-  return lead.email
-})
-const matchingIds = finalDuplicatesToKeep.map(lead => {
-  return lead._id
-})
-const matchingKeysToRemove = [...matchingIds, ...matchingEmails,]
-//need to go through data.leads and remove any matchingKeysToRemove 
-
-const removeMatchingKeys = leadsArr => {
+/**
+ * uses matchingKeysToRemove to get the data to keep from original leads (newLeadsData) 
+ * and gets the data to be removed from original leads (leadsToRemove)
+ * 
+ * @param {array} leadsArr 
+ * 
+ * @returns {object} 
+ */
+const filterDataByMatchingKeys = leadsArr => {
   let leadsToRemove = [];
   let newLeadsData = leadsArr.slice();
   for (let i = leadsArr.length - 1; i >= 0; i--) {
     if (matchingKeysToRemove.includes(leadsArr[i]._id) || matchingKeysToRemove.includes(leadsArr[i].email)) {
-      // console.log('matched: ', leadsArr[i]);
       leadsToRemove.push(leadsArr[i])
       newLeadsData.splice(i, 1);
     } 
@@ -132,17 +102,33 @@ const removeMatchingKeys = leadsArr => {
   };
 }
 
-const toBeRemoved = removeMatchingKeys(data.leads).leadsToRemove
-// console.log('leadsTORemove: ', toBeRemoved);
+//get duplicates
+const emailDupes = getDuplicates(data.leads, 'email');
+const idDupes = getDuplicates(data.leads, '_id');
 
-// const leadsToStay = removeMatchingKeys(data.leads).newLeadsData
-// // console.log('leadsToStay: ', leadsToStay);
+//get duplicated to keep
+const emailDuplicatesToKeep = getMostRecentOrLast(emailDupes.dupes, 'email');
+const idDuplicatesToKeep = getMostRecentOrLast(idDupes.dupes, '_id');
 
-const finalLeadsArr = [...removeMatchingKeys(data.leads).newLeadsData, ...finalDuplicatesToKeep];
-// console.log('finalLeadsArr', finalLeadsArr);
+//get final duplicates to keep removing and leads that were present in both email and id duplicates
+const finalDuplicatesToKeep = removeIdenticalLeads(emailDuplicatesToKeep, idDuplicatesToKeep);
+
+//get all matching email and id values used to filter in filterDataByMatchingKeys
+const matchingEmails = finalDuplicatesToKeep.map(lead => {
+  return lead.email
+});
+const matchingIds = finalDuplicatesToKeep.map(lead => {
+  return lead._id
+});
+const matchingKeysToRemove = [...matchingIds, ...matchingEmails,];
+
+const filteredData = filterDataByMatchingKeys(data.leads);
+
+const finalLeadsArr = [...filteredData.newLeadsData, ...finalDuplicatesToKeep];
+data.leads = finalLeadsArr;
 
 //write to file
-fs.writeFile(filename, JSON.stringify(finalLeadsArr, null, 2), function (err) {
+fs.writeFile(filename, JSON.stringify(data, null, 2), function (err) {
   if (err) {
     return console.log(err);
   }
@@ -152,13 +138,11 @@ fs.writeFile(filename, JSON.stringify(finalLeadsArr, null, 2), function (err) {
   console.log(data.leads);
 
   console.log('TO BE REMOVED:');
-  console.log(toBeRemoved);  
+  console.log(filteredData.leadsToRemove);  
 
   console.log('OUTPUT LEADS: ')
   console.log(finalLeadsArr);
-
 });
-
 
 module.exports = {
   getDuplicates,
