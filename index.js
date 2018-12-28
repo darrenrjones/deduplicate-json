@@ -106,14 +106,14 @@ const filterDataByMatchingKeys = leadsArr => {
 const emailDupes = getDuplicates(data.leads, 'email');
 const idDupes = getDuplicates(data.leads, '_id');
 
-//get duplicated to keep
+//get duplicates to keep
 const emailDuplicatesToKeep = getMostRecentOrLast(emailDupes.dupes, 'email');
 const idDuplicatesToKeep = getMostRecentOrLast(idDupes.dupes, '_id');
 
-//get final duplicates to keep removing and leads that were present in both email and id duplicates
+//get final duplicates to keep, removing any leads that were present in both email and/or id duplicatesToKeep
 const finalDuplicatesToKeep = removeIdenticalLeads(emailDuplicatesToKeep, idDuplicatesToKeep);
 
-//get all matching email and id values used to filter in filterDataByMatchingKeys
+//get all matching email and id values from finalDuplicates to use to filter data in filterDataByMatchingKeys
 const matchingEmails = finalDuplicatesToKeep.map(lead => {
   return lead.email
 });
@@ -125,24 +125,17 @@ const matchingKeysToRemove = [...matchingIds, ...matchingEmails,];
 const filteredData = filterDataByMatchingKeys(data.leads);
 
 const finalLeadsArr = [...filteredData.newLeadsData, ...finalDuplicatesToKeep];
-data.leads = finalLeadsArr;
 
-// // write to file
-// fs.writeFile(filename, JSON.stringify(data, null, 2), function (err) {
-//   if (err) {
-//     return console.log(err);
-//   }
-//   console.log("The file was saved!");
+  console.log("The file was saved!");
 
-//   console.log('SOURCE: ')
-//   console.log(data.leads);
+  console.log('SOURCE: ')
+  console.log(data.leads);
 
-//   console.log('TO BE REMOVED:');
-//   console.log(filteredData.leadsToRemove);  
+  console.log('TO BE REMOVED:');
+  console.log(filteredData.leadsToRemove);  
 
-//   console.log('OUTPUT LEADS: ')
-//   console.log(finalLeadsArr);
-// });
+  console.log('OUTPUT LEADS: ')
+  console.log(finalLeadsArr);
 
 module.exports = {
   getDuplicates,

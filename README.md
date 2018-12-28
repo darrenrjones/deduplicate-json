@@ -1,10 +1,10 @@
 # Deduplicate JSON
 
-This application will deduplicate a JSON file with the leads format.
+This application will deduplicate a JSON file of the leads format.
 
-It will replace all objects in the leads array that have a duplicate 'email' or '_id' field. It will replace them all with the object which has the most recent 'entryDate'. If there are matching objects with the same 'entryDate' it will choose the one that is last in the original JSON file.
+It will replace all objects in the leads array that have a duplicate 'email' or '_id' field. It will replace them all with the single object from the duplicate group which has the most recent 'entryDate'. If there are matching objects with the same 'entryDate' it will choose the one that is last in the original JSON file.
 
-The original JSON file will be overwritten providing you with a one time console log of the original JSON, the items to be removed, and the final version of the file.
+Running the program will provide you with a one time console log of the original JSON, the items to be removed, and the final deduplicated data.
 
 ## Getting Started:
 
@@ -22,22 +22,22 @@ cd deduplicate-json
 npm install
 ```
 
-In terminal you can now deduplicate a json file, given it has 
+In the terminal, you can now deduplicate a json file, given it has 
 the proper leads format. 
 
-Run:
+Run the following to deduplicate the provided leads.json file:
 
 ```
 node index.js leads.json
 ```
 
-To deduplicate other similar files simply add the .json file to the root location of the project folder and then run
+To deduplicate other similar JSON files simply add the .json file to the root location of the project folder and then run
 
 ```
-node index.js 'nameOfJsonFileHere.json'
+node index.js 'nameOfJsonFileHere'.json
 ```
 
-##Example after running on leads.json
+## Example after running on leads.json
 
 
 ```
@@ -182,21 +182,21 @@ OUTPUT LEADS:
 
 ## Testing
 
-in root directory run
+In the root directory run
 
 ```
 npm test
 ```
 
-Unit tests on the main functions using the leadsTester.json file.
+Tests consist of unit tests on the main functions from index.js using the leadsTester.json file for test data.
 
 ## Built With
 
-[Node.js](https://nodejs.org)
+- [Node.js](https://nodejs.org)
 
-[Moment.js](https://momentjs.com/)
+- [Moment.js](https://momentjs.com/)
 
-[Jest](https://facebook.github.io/jest/)
+- [Jest](https://facebook.github.io/jest/)
 
 ## Author
 

@@ -6,14 +6,13 @@ const getDuplicates = require('../').getDuplicates;
 const getMostRecentOrLast = require('../').getMostRecentOrLast;
 const removeIdenticalLeads = require('../').removeIdenticalLeads;
 
-// const filename = process.argv[2];
+const filename = process.argv[2];
 
 try {
-  data = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+  data = JSON.parse(fs.readFileSync(filename, 'utf8'));
 } catch (e) {
   console.log('Error:', e.stack);
 }
-
 
 describe('getDuplicates', () => {
   
