@@ -126,8 +126,6 @@ const filteredData = filterDataByMatchingKeys(data.leads);
 
 const finalLeadsArr = [...filteredData.newLeadsData, ...finalDuplicatesToKeep];
 
-  console.log("The file was saved!");
-
   console.log('SOURCE: ')
   console.log(data.leads);
 

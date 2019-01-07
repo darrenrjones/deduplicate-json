@@ -41,7 +41,6 @@ node index.js 'nameOfJsonFileHere'.json
 
 
 ```
-The file was saved!
 SOURCE: 
 [ { _id: 'jkj238238jdsnfsj23',
     email: 'foo@bar.com',
